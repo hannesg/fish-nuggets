@@ -197,11 +197,11 @@ complete -f -c git -n '__fish_git_needs_command' -a pull -d 'Fetch from and merg
 
 ### push
 complete -f -c git -n '__fish_git_needs_command' -a push -d 'Update remote refs along with associated objects'
-complete -f -c git -n '__fish_git_using_command push; and not __fish_git_push_remote_given' -a '--all' -d 'Push all branches'
-complete -f -c git -n '__fish_git_using_command push; and not __fish_git_push_remote_given' -a '--mirror' -d 'Push everything'
-complete -f -c git -n '__fish_git_using_command push; and not __fish_git_push_remote_given' -a '-n --dry-run' -d 'Just say what would be done'
-complete -f -c git -n '__fish_git_using_command push; and not __fish_git_push_remote_given' -a '--tags' -d 'Push all tags'
-complete -f -c git -n '__fish_git_using_command push; and not __fish_git_push_remote_given' -a '-f --force' -d 'Force pushing'
+complete -f -c git -n '__fish_git_using_command push; and not __fish_git_push_remote_given' -l all -d 'Push all branches'
+complete -f -c git -n '__fish_git_using_command push; and not __fish_git_push_remote_given' -l mirror -d 'Push everything'
+complete -f -c git -n '__fish_git_using_command push; and not __fish_git_push_remote_given' -s n -l dry-run -d 'Just say what would be done'
+complete -f -c git -n '__fish_git_using_command push; and not __fish_git_push_remote_given' -l tags -d 'Push all tags'
+complete -f -c git -n '__fish_git_using_command push; and not __fish_git_push_remote_given' -s f -l force -d 'Force pushing'
 
 complete -f -c git -n '__fish_git_using_command push; and not __fish_git_push_remote_given' -a '(__fish_git_remotes)' -d 'Push to remote'
 
