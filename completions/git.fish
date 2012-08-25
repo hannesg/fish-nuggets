@@ -4,6 +4,11 @@ function __fish_git_branches
   git branch --no-color -a 2>/dev/null | sed 's/^..//'
 end
 
+function __fish_git_local_branches
+  git branch --no-color 2>/dev/null | sed 's/^..//'
+end
+
+
 function __fish_git_tags
   git tag
 end
@@ -30,6 +35,20 @@ function __fish_git_ranges
       printf "%s..%s\n" $from_ref $to_ref
     end
   end
+end
+
+function __fish_git_non_opts
+  set cmd (commandline -opc)
+  set -e cmd[1] # git
+  set -e cmd[1] # git-subcommand
+  for i in $cmd
+    echo -n "$i" | grep -v "^-"
+  end
+end
+
+function __fish_git_push_remote_given
+  set non_opts (__fish_git_non_opts)
+  [ (count $non_opts) -ne 0 ]
 end
 
 function __fish_git_needs_command
@@ -178,7 +197,16 @@ complete -f -c git -n '__fish_git_needs_command' -a pull -d 'Fetch from and merg
 
 ### push
 complete -f -c git -n '__fish_git_needs_command' -a push -d 'Update remote refs along with associated objects'
-# TODO options
+complete -f -c git -n '__fish_git_using_command push; and not __fish_git_push_remote_given' -a '--all' -d 'Push all branches'
+complete -f -c git -n '__fish_git_using_command push; and not __fish_git_push_remote_given' -a '--mirror' -d 'Push everything'
+complete -f -c git -n '__fish_git_using_command push; and not __fish_git_push_remote_given' -a '-n --dry-run' -d 'Just say what would be done'
+complete -f -c git -n '__fish_git_using_command push; and not __fish_git_push_remote_given' -a '--tags' -d 'Push all tags'
+complete -f -c git -n '__fish_git_using_command push; and not __fish_git_push_remote_given' -a '-f --force' -d 'Force pushing'
+
+complete -f -c git -n '__fish_git_using_command push; and not __fish_git_push_remote_given' -a '(__fish_git_remotes)' -d 'Push to remote'
+
+complete -f -c git -n '__fish_git_using_command push; and __fish_git_push_remote_given' -a '(__fish_git_local_branches)' -d 'Push branch'
+complete -f -c git -n '__fish_git_using_command push; and __fish_git_push_remote_given' -a '(__fish_git_tags)' -d 'Push tag'
 
 ### rebase
 complete -f -c git -n '__fish_git_needs_command' -a rebase -d 'Forward-port local commits to the updated upstream head'
